@@ -18,26 +18,6 @@ defmodule KalkaWeb.LinkLive do
     # {:ok, assign(socket, %{changeset: Shortener.change_link(%Link{}), shortlink: ""})}
   end
 
-  def render(assigns) do
-    ~L"""
-    <%= form_for @changeset, "#", [phx_change: :validate, phx_submit: :create_link], fn f -> %>
-    <div>
-     <%= label f, :url %>
-     <%= text_input f, :url %>
-     <%= error_tag f, :url %>
-    </div>
-
-    <div>
-    <%= label f, :slug, "Preferred Short Link" %>
-    <%= text_input f, :slug %>
-    <%= error_tag f, :slug %>
-    </div>
-
-    <button type="submit" phx-disable-with="">Generate</button>
-    <% end %>
-    """
-  end
-
   def handle_event("validate", %{"link" => link_params}, socket) do
     changeset =
       %Link{}
