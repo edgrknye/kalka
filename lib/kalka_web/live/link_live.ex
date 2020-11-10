@@ -1,9 +1,6 @@
 defmodule KalkaWeb.LinkLive do
   use KalkaWeb, :live_view
 
-  use Phoenix.HTML
-  import KalkaWeb.ErrorHelpers
-
   alias Kalka.Shortener
   alias Kalka.Shortener.Link
   require Logger
@@ -29,8 +26,13 @@ defmodule KalkaWeb.LinkLive do
 
   def handle_event("create_link", %{"link" => link_params}, socket) do
     case Shortener.create_link(link_params) do
-      {:ok, link} -> {:noreply, assign(socket, :shortlink, link.slug)}
-      {:error, %Ecto.Changeset{} = changeset} -> {:noreply, assign(socket, changeset: changeset)}
+      {:ok, link} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, "link successfully created #{link.url}")}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:noreply, assign(socket, changeset: changeset)}
     end
   end
 end
