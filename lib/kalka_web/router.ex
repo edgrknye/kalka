@@ -19,6 +19,7 @@ defmodule KalkaWeb.Router do
 
     live "/", PageLive, :index
     live "/links", LinkLive
+    live "/title", StatelessComponent
   end
 
   # Other scopes may use custom stacks.
