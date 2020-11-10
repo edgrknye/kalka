@@ -18,6 +18,7 @@ defmodule KalkaWeb.Router do
     pipe_through :browser
 
     live "/", PageLive, :index
+    live "/links", LinkLive
   end
 
   # Other scopes may use custom stacks.
