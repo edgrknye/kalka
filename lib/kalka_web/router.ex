@@ -17,7 +17,8 @@ defmodule KalkaWeb.Router do
   scope "/", KalkaWeb do
     pipe_through :browser
 
-    live "/", PageLive, :index
+    # live "/", PageLive, :index
+    live "/", LinkLive.New
     live "/links", LinkLive
     live "/title", StatelessComponent
   end
