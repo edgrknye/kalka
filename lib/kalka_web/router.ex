@@ -18,13 +18,14 @@ defmodule KalkaWeb.Router do
     pipe_through :browser
 
     live "/", PageLive, :index
-    live "/links", LinkLive
+    # live "/links", LinkLive
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", KalkaWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", KalkaWeb do
+    pipe_through :api
+    resources "/links", LinkController, except: [:new, :edit]
+  end
 
   # Enables LiveDashboard only for development
   #
