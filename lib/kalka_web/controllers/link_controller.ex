@@ -24,14 +24,6 @@ defmodule KalkaWeb.LinkController do
     render(conn, "show.json", link: link)
   end
 
-  def update(conn, %{"id" => id, "link" => link_params}) do
-    link = Shortener.get_link!(id)
-
-    with {:ok, %Link{} = link} <- Shortener.update_link(link, link_params) do
-      render(conn, "show.json", link: link)
-    end
-  end
-
   def delete(conn, %{"id" => id}) do
     link = Shortener.get_link!(id)
 
