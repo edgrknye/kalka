@@ -11,6 +11,6 @@ defmodule KalkaWeb.LinkView do
   end
 
   def render("link.json", %{link: link}) do
-    %{id: link.id}
+    %{id: link.id, url: link.url, slug: link.slug}
   end
 end
