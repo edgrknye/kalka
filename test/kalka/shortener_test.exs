@@ -116,10 +116,4 @@ defmodule Kalka.ShortenerTest do
       assert %Ecto.Changeset{} = Shortener.change_link(link)
     end
   end
-
-  # test "delete_link/1 deletes the link" do
-  #   link = link_fixture()
-  #   assert {:ok, %Link{}} = Shortener.delete_link(link)
-  #   assert_raise Ecto.NoResultsError, fn -> Shortener.get_link!(link.id) end
-  # end
 end
