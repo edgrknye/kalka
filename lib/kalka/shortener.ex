@@ -58,24 +58,6 @@ defmodule Kalka.Shortener do
   end
 
   @doc """
-  Updates a link.
-
-  ## Examples
-
-      iex> update_link(link, %{field: new_value})
-      {:ok, %Link{}}
-
-      iex> update_link(link, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_link(%Link{} = link, attrs) do
-    link
-    |> Link.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
   Deletes a link.
 
   ## Examples
