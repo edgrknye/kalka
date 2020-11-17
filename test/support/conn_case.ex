@@ -24,6 +24,9 @@ defmodule KalkaWeb.ConnCase do
       import Phoenix.ConnTest
       import KalkaWeb.ConnCase
 
+      # import all test factories here
+      import Kalka.Factory
+
       alias KalkaWeb.Router.Helpers, as: Routes
 
       # The default endpoint for testing

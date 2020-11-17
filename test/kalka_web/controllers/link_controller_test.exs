@@ -1,21 +1,8 @@
 defmodule KalkaWeb.LinkControllerTest do
   use KalkaWeb.ConnCase
 
-  alias Kalka.Shortener
-  alias Kalka.Shortener.Link
-
-  @create_attrs %{
-
-  }
-  @update_attrs %{
-
-  }
-  @invalid_attrs %{}
-
-  def fixture(:link) do
-    {:ok, link} = Shortener.create_link(@create_attrs)
-    link
-  end
+  @create_attrs %{url: "http://example.com", slug: "slugg"}
+  @invalid_attrs %{url: "just a string"}
 
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
@@ -26,61 +13,50 @@ defmodule KalkaWeb.LinkControllerTest do
       conn = get(conn, Routes.link_path(conn, :index))
       assert json_response(conn, 200)["data"] == []
     end
+
+    test "list all links when available", %{conn: conn} do
+      insert(:link)
+      conn = get(conn, Routes.link_path(conn, :index))
+
+      assert data = json_response(conn, 200)["data"]
+      assert length(data) == 1
+    end
   end
 
   describe "create link" do
-    test "renders link when data is valid", %{conn: conn} do
+    test "creates a link when given both the slug and the url", %{conn: conn} do
       conn = post(conn, Routes.link_path(conn, :create), link: @create_attrs)
-      assert %{"id" => id} = json_response(conn, 201)["data"]
 
-      conn = get(conn, Routes.link_path(conn, :show, id))
-
-      assert %{
-               "id" => id
-             } = json_response(conn, 200)["data"]
+      assert %{} = data = json_response(conn, :created)
+      assert data["url"] == @create_attrs["url"]
+      assert data["slug"] == @create_attrs["slug"]
     end
 
-    test "renders errors when data is invalid", %{conn: conn} do
+    test "creates a link when only given a url", %{conn: conn} do
+      conn = post(conn, Routes.link_path(conn, :create), link: %{url: "https://google.com"})
+
+      assert %{} = data = json_response(conn, :created)["data"]
+      assert data["url"] == "https://google.com"
+      assert data["slug"] != ""
+    end
+
+    test "returns an error when the given url is invalid", %{conn: conn} do
       conn = post(conn, Routes.link_path(conn, :create), link: @invalid_attrs)
-      assert json_response(conn, 422)["errors"] != %{}
-    end
-  end
 
-  describe "update link" do
-    setup [:create_link]
-
-    test "renders link when data is valid", %{conn: conn, link: %Link{id: id} = link} do
-      conn = put(conn, Routes.link_path(conn, :update, link), link: @update_attrs)
-      assert %{"id" => ^id} = json_response(conn, 200)["data"]
-
-      conn = get(conn, Routes.link_path(conn, :show, id))
-
-      assert %{
-               "id" => id
-             } = json_response(conn, 200)["data"]
-    end
-
-    test "renders errors when data is invalid", %{conn: conn, link: link} do
-      conn = put(conn, Routes.link_path(conn, :update, link), link: @invalid_attrs)
-      assert json_response(conn, 422)["errors"] != %{}
+      assert %{} = data = json_response(conn, :unprocessable_entity)
+      assert data["errors"] == %{"url" => ["invalid URL"]}
     end
   end
 
   describe "delete link" do
-    setup [:create_link]
-
-    test "deletes chosen link", %{conn: conn, link: link} do
+    test "deletes chosen link", %{conn: conn} do
+      link = insert(:link)
       conn = delete(conn, Routes.link_path(conn, :delete, link))
-      assert response(conn, 204)
+      assert response(conn, :no_content)
 
-      assert_error_sent 404, fn ->
+      assert_error_sent :not_found, fn ->
         get(conn, Routes.link_path(conn, :show, link))
       end
     end
-  end
-
-  defp create_link(_) do
-    link = fixture(:link)
-    %{link: link}
   end
 end
