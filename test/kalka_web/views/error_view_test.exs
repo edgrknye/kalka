@@ -11,4 +11,8 @@ defmodule KalkaWeb.ErrorViewTest do
   test "renders 500.html" do
     assert render_to_string(KalkaWeb.ErrorView, "500.html", []) == "Internal Server Error"
   end
+
+  test "renders 404.json" do
+    assert render(KalkaWeb.ErrorView, "404.json", []) == %{message: "not found"}
+  end
 end
