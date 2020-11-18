@@ -24,6 +24,9 @@ defmodule Kalka.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import Kalka.DataCase
+
+      # using factories instead of fixturess
+      import Kalka.Factory
     end
   end
 

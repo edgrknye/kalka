@@ -4,9 +4,6 @@ defmodule Kalka.ShortenerTest do
   alias Kalka.Shortener
   alias Kalka.Shortener.Link
 
-  # using factories instead of fixtures
-  import Kalka.Factory
-
   describe "list_links/0" do
     test "returns all links currently saved in the db" do
       link = insert(:link)
